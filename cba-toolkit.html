@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Powered Cost-Benefit Analysis Toolkit | CTED Advanced ED Finance</title>
+<style>
+:root {
+  --primary: #1a3c6e;
+  --primary-light: #2a5298;
+  --accent: #c8a415;
+  --accent-light: #e8c940;
+  --success: #2e7d32;
+  --warning: #f57c00;
+  --danger: #c62828;
+  --surface: #f4f6f8;
+  --card: #ffffff;
+  --text: #1a1a2e;
+  --text-light: #5a5a7a;
+  --border: #e0e4ea;
+  --radius: 10px;
+  --shadow: 0 2px 12px rgba(26,60,110,0.08);
+  --shadow-lg: 0 8px 32px rgba(26,60,110,0.12);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--surface);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+}
+.header {
+  background: linear-gradient(135deg, var(--primary) 0%, #0d2240 100%);
+  color: white;
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.header-star {
+  font-size: 2.5rem;
+  color: var(--accent);
+  line-height: 1;
+}
+.header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.header .subtitle {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  font-weight: 400;
+  margin-top: 2px;
+}
+.header-meta {
+  text-align: right;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+nav {
+  background: var(--card);
+  border-bottom: 2px solid var(--border);
+  padding: 0 1rem;
+  display: flex;
+  overflow-x: auto;
+  gap: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+nav button {
+  background: none;
+  border: none;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+nav button:hover { color: var(--primary); background: rgba(26,60,110,0.04); }
+nav button.active {
+  color: var(--primary);
+  border-bottom-color: var(--accent);
+  background: rgba(200,164,21,0.06);
+}
+.main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+.section-panel { display: none; }
+.section-panel.active { display: block; }
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border);
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.card-header .step-badge {
+  background: var(--primary);
+  color: white;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+.card-header h2 { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+.card-header h3 { font-size: 1.1rem; font-weight: 600; color: var(--primary); }
+h2 { font-size: 1.4rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem; }
+h3 { font-size: 1.1rem; font-weight: 600; color: var(--primary); margin-bottom: 0.75rem; }
+h4 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.badge-primary { background: rgba(26,60,110,0.1); color: var(--primary); }
+.badge-accent { background: rgba(200,164,21,0.15); color: #8a7010; }
+.badge-success { background: rgba(46,125,50,0.1); color: var(--success); }
+.badge-danger { background: rgba(198,40,40,0.1); color: var(--danger); }
+.badge-required { background: var(--danger); color: white; }
+.badge-optional { background: var(--border); color: var(--text-light); }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.25rem; }
+.tile {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+.tile:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+.tile .tile-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+.tile .tile-num.gold { background: var(--accent); color: var(--primary); }
+.tile h4 { margin-bottom: 0.35rem; }
+.tile p { font-size: 0.85rem; color: var(--text-light); margin: 0; }
+.prompt-block {
+  background: #0d1b2a;
+  color: #d4e4f7;
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  position: relative;
+  margin: 1rem 0;
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid #1a3050;
+}
+.prompt-block .highlight {
+  background: rgba(200,164,21,0.25);
+  color: var(--accent-light);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  font-weight: 600;
+}
+.data-block {
+  background: #fefdf5;
+  border: 2px solid #e8d880;
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  position: relative;
+  margin: 1rem 0;
+  max-height: 500px;
+  overflow-y: auto;
+}
+.copy-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  z-index: 5;
+}
+.copy-btn:hover { background: var(--primary-light); }
+.copy-btn.copied { background: var(--success); }
+.role-card {
+  background: linear-gradient(135deg, rgba(26,60,110,0.04) 0%, rgba(200,164,21,0.04) 100%);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.role-card .role-title { font-weight: 700; color: var(--primary); font-size: 1rem; margin-bottom: 0.25rem; }
+.role-card .role-desc { font-size: 0.9rem; color: var(--text-light); }
+.deliverables-list {
+  list-style: none;
+  padding: 0;
+}
+.deliverables-list li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.deliverables-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+/* QC Checklist */
+.qc-category {
+  margin-bottom: 1.5rem;
+}
+.qc-category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(26,60,110,0.05);
+  border-radius: 8px;
+}
+.qc-category-header h3 { margin: 0; font-size: 1rem; }
+.qc-weight { font-size: 0.85rem; font-weight: 700; color: var(--accent); }
+.qc-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+.qc-item:last-child { border-bottom: none; }
+.qc-item input[type="checkbox"] {
+  width: 18px; height: 18px;
+  margin-top: 2px;
+  accent-color: var(--primary);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.qc-item label { cursor: pointer; flex: 1; }
+.score-display {
+  text-align: center;
+  padding: 2rem;
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  margin-top: 1.5rem;
+}
+.score-number {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.score-number.pass { color: var(--success); }
+.score-number.warn { color: var(--warning); }
+.score-number.fail { color: var(--danger); }
+.progress-bar-container {
+  background: var(--border);
+  border-radius: 20px;
+  height: 10px;
+  overflow: hidden;
+  margin: 0.35rem 0;
+}
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.4s ease, background 0.4s ease;
+}
+.score-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+}
+.score-row .label { font-weight: 600; min-width: 130px; }
+.score-row .bar { flex: 1; }
+.score-row .pct { min-width: 50px; text-align: right; font-weight: 700; font-size: 0.85rem; }
+/* Data Input Table */
+.input-table { width: 100%; border-collapse: collapse; }
+.input-table th {
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.input-table td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+  vertical-align: top;
+}
+.input-table tr:nth-child(even) { background: rgba(26,60,110,0.02); }
+.input-table .group-row td {
+  background: rgba(200,164,21,0.08);
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 0.85rem;
+  padding: 0.6rem 1rem;
+  border-bottom: 2px solid var(--accent);
+}
+.input-table input[type="text"],
+.input-table textarea {
+  width: 100%;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  transition: border-color 0.2s;
+}
+.input-table input[type="text"]:focus,
+.input-table textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(26,60,110,0.1);
+}
+.input-table textarea { min-height: 60px; resize: vertical; }
+/* Curriculum Table */
+.curriculum-table { width: 100%; border-collapse: collapse; }
+.curriculum-table th {
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.8rem;
+}
+.curriculum-table td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+}
+.curriculum-table tr:nth-child(even) { background: rgba(26,60,110,0.02); }
+.curriculum-table tr:hover { background: rgba(200,164,21,0.06); }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-light); }
+.btn-accent { background: var(--accent); color: var(--primary); }
+.btn-accent:hover { background: var(--accent-light); }
+.btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+.btn-outline:hover { background: var(--primary); color: white; }
+.btn-group { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1rem 0; }
+.info-box {
+  background: rgba(26,60,110,0.04);
+  border-left: 4px solid var(--primary);
+  padding: 1rem 1.25rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+.info-box.gold {
+  background: rgba(200,164,21,0.06);
+  border-left-color: var(--accent);
+}
+.instructions-list {
+  counter-reset: step;
+  list-style: none;
+  padding: 0;
+}
+.instructions-list li {
+  counter-increment: step;
+  padding: 0.75rem 0 0.75rem 3rem;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+.instructions-list li:last-child { border-bottom: none; }
+.instructions-list li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  width: 28px; height: 28px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  top: 0.7rem;
+}
+.pass-fail-badge {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 0.75rem;
+}
+.pass-fail-badge.pass { background: rgba(46,125,50,0.12); color: var(--success); border: 2px solid var(--success); }
+.pass-fail-badge.fail { background: rgba(198,40,40,0.08); color: var(--danger); border: 2px solid var(--danger); }
+.hero-banner {
+  text-align: center;
+  padding: 2.5rem 2rem;
+  background: linear-gradient(135deg, rgba(26,60,110,0.06) 0%, rgba(200,164,21,0.08) 100%);
+  border-radius: var(--radius);
+  margin-bottom: 2rem;
+  border: 1px solid var(--border);
+}
+.hero-banner .star { font-size: 3rem; color: var(--accent); display: block; margin-bottom: 1rem; }
+.hero-banner h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+.hero-banner p { font-size: 1rem; color: var(--text-light); max-width: 700px; margin: 0 auto; }
+.footer {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-light);
+  font-size: 0.8rem;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+@media (max-width: 768px) {
+  .header { padding: 1rem; }
+  .header h1 { font-size: 1.2rem; }
+  .main { padding: 1rem; }
+  .grid-3, .grid-2, .two-col { grid-template-columns: 1fr; }
+  nav { padding: 0 0.5rem; }
+  nav button { padding: 0.7rem 0.75rem; font-size: 0.75rem; }
+}
+@media print {
+  nav, .copy-btn, .btn-group, .header-meta { display: none !important; }
+  .section-panel { display: block !important; page-break-before: always; }
+  .section-panel:first-of-type { page-break-before: auto; }
+  .card { box-shadow: none; border: 1px solid #ccc; }
+  body { font-size: 11pt; }
+  .prompt-block, .data-block { max-height: none; overflow: visible; font-size: 9pt; }
+  .header { background: white; color: var(--primary); border-bottom: 3px solid var(--primary); }
+  .header-star { color: var(--accent); }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<div class="header">
+  <div class="header-brand">
+    <div class="header-star">&#9733;</div>
+    <div>
+      <h1>AI-Powered Cost-Benefit Analysis Toolkit</h1>
+      <div class="subtitle">CTED Advanced Economic Development Finance &bull; Professional Certification Program</div>
+    </div>
+  </div>
+  <div class="header-meta">
+    Self-Contained Deliverables Hub<br>
+    No Login &bull; No Subscription &bull; Works Offline
+  </div>
+</div>
+
+<!-- ========== NAVIGATION ========== -->
+<nav id="mainNav">
+  <button class="active" data-section="hub">Hub</button>
+  <button data-section="step1">Step 1: Intake</button>
+  <button data-section="step2">Step 2: Impact</button>
+  <button data-section="step3">Step 3: Tax Revenue</button>
+  <button data-section="step4">Step 4: Scenarios</button>
+  <button data-section="step5">Step 5: Board Prep</button>
+  <button data-section="step6">Step 6: QA</button>
+  <button data-section="bootstrap">Bootstrap Prompt</button>
+  <button data-section="qc">QC Checklist</button>
+  <button data-section="teaching">Teaching Ref</button>
+  <button data-section="datainput">Data Checklist</button>
+</nav>
+
+<div class="main">
+
+<!-- ================================================================ -->
+<!--                    SECTION: HUB (Landing)                        -->
+<!-- ================================================================ -->
+<div class="section-panel active" id="hub">
+  <div class="hero-banner">
+    <span class="star">&#9733;</span>
+    <h2>AI-Powered CBA Toolkit</h2>
+    <p>A complete, self-contained workflow that transforms any AI assistant into a team of six economic development consultants &mdash; producing board-ready fiscal impact deliverables in one session.</p>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:2rem;">
+    <div class="card" style="text-align:center; border-top:3px solid var(--primary);">
+      <h3>6-Step AI Workflow</h3>
+      <p style="font-size:0.9rem; color:var(--text-light);">Intake &rarr; Impact &rarr; Tax Revenue &rarr; Scenarios &rarr; Board Prep &rarr; QA. Each step has a prompt template, role definition, and demo data.</p>
+    </div>
+    <div class="card" style="text-align:center; border-top:3px solid var(--accent);">
+      <h3>Demo Data Package</h3>
+      <p style="font-size:0.9rem; color:var(--text-light);">Synthetic data for &ldquo;Lone Star Advanced Manufacturing&rdquo; &mdash; a $185M aerospace expansion into Texas. Labeled by step.</p>
+    </div>
+    <div class="card" style="text-align:center; border-top:3px solid var(--success);">
+      <h3>QC &amp; Teaching Resources</h3>
+      <p style="font-size:0.9rem; color:var(--text-light);">Weighted scoring rubric (90% pass), CTED curriculum mapping, and a data input checklist for real projects.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>How to Use This Toolkit</h3>
+    <ol class="instructions-list">
+      <li><strong>Review the Demo Data.</strong> Click through Steps 1&ndash;6 to see the synthetic &ldquo;Lone Star Advanced Manufacturing&rdquo; scenario and understand what each step requires.</li>
+      <li><strong>Copy the Bootstrap Prompt.</strong> Go to the <em>Bootstrap Prompt</em> tab and copy the master prompt to your clipboard.</li>
+      <li><strong>Open Any AI Assistant.</strong> Paste the bootstrap prompt into ChatGPT, Claude, Gemini, Copilot, or any LLM of your choice. The prompt activates the full 6-step workflow.</li>
+      <li><strong>Feed Demo Data When Prompted.</strong> The AI will walk you through each step and ask for inputs. Copy-paste the demo data blocks from each step tab.</li>
+      <li><strong>Review Output Against QC Checklist.</strong> Use the interactive QC Checklist tab to score the AI&rsquo;s deliverables. Target: 90% or higher.</li>
+      <li><strong>Repeat With Real Project Data.</strong> Use the Data Checklist tab to collect inputs for your own projects, then run the same workflow with live numbers.</li>
+    </ol>
+  </div>
+
+  <h3 style="margin-top:2rem; margin-bottom:1rem;">Quick Navigation</h3>
+  <div class="grid-3">
+    <div class="tile" onclick="showSection('step1')">
+      <div class="tile-num">1</div>
+      <h4>Project Intake</h4>
+      <p>Structured data gathering &amp; feasibility screening</p>
+    </div>
+    <div class="tile" onclick="showSection('step2')">
+      <div class="tile-num">2</div>
+      <h4>Economic Impact</h4>
+      <p>Multiplier analysis &amp; regional employment effects</p>
+    </div>
+    <div class="tile" onclick="showSection('step3')">
+      <div class="tile-num">3</div>
+      <h4>Tax Revenue</h4>
+      <p>10-year projections, abatements, school district impact</p>
+    </div>
+    <div class="tile" onclick="showSection('step4')">
+      <div class="tile-num">4</div>
+      <h4>Cost-Benefit Scenarios</h4>
+      <p>Conservative / base / optimistic NPV models</p>
+    </div>
+    <div class="tile" onclick="showSection('step5')">
+      <div class="tile-num">5</div>
+      <h4>Board Presentation</h4>
+      <p>Executive summary, talking points, FAQ</p>
+    </div>
+    <div class="tile" onclick="showSection('step6')">
+      <div class="tile-num">6</div>
+      <h4>Quality Assurance</h4>
+      <p>Peer audit &amp; error flagging against CTED standards</p>
+    </div>
+    <div class="tile" onclick="showSection('bootstrap')">
+      <div class="tile-num gold">&#9733;</div>
+      <h4>Bootstrap Prompt</h4>
+      <p>One prompt that activates the entire workflow</p>
+    </div>
+    <div class="tile" onclick="showSection('qc')">
+      <div class="tile-num gold">&#10003;</div>
+      <h4>QC Checklist</h4>
+      <p>Interactive scoring with weighted rubric</p>
+    </div>
+    <div class="tile" onclick="showSection('datainput')">
+      <div class="tile-num gold">&#9998;</div>
+      <h4>Data Checklist</h4>
+      <p>Fill-in template for real project data</p>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!--                    STEP 1: PROJECT INTAKE                        -->
+<!-- ================================================================ -->
+<div class="section-panel" id="step1">
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">1</div>
+      <div>
+        <h2>Project Intake Specialist</h2>
+        <span class="badge badge-primary">Data Gathering &amp; Feasibility</span>
+      </div>
+    </div>
+
+    <div class="role-card">
+      <div class="role-title">AI Role: Senior Economic Development Project Intake Specialist</div>
+      <div class="role-desc">You are a Senior Economic Development Project Intake Specialist with 15 years of experience processing corporate relocation and expansion inquiries across Texas EDCs. Your task is to organize raw project information into a structured profile, assess data completeness, and flag initial feasibility concerns.</div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h4>Deliverables</h4>
+        <ul class="deliverables-list">
+          <li>Structured project profile (standardized format)</li>
+          <li>Data completeness assessment (% of fields populated)</li>
+          <li>Initial feasibility flags (red/yellow/green)</li>
+          <li>Missing information request list</li>
+          <li>Community comparison matrix (if multiple sites)</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Required Inputs</h4>
+        <ul class="deliverables-list">
+          <li>Company name, industry, NAICS code</li>
+          <li>Capital investment breakdown</li>
+          <li>Employment projections &amp; wage data</li>
+          <li>Site requirements &amp; target communities</li>
+          <li>Timeline &amp; incentive requests</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Prompt Template &mdash; Step 1</h3>
+    <div class="prompt-block" id="prompt1">You are a Senior Economic Development Project Intake Specialist with 15 years of experience processing corporate relocation and expansion inquiries across Texas EDCs.
+
+TASK: Organize the following raw project information into a structured project profile. Then:
+1. Assess data completeness (% of critical fields populated)
+2. Flag initial feasibility concerns (Red / Yellow / Green for each category)
+3. Generate a missing information request list
+4. If multiple target communities are provided, create a comparison matrix
+
+Use the following project data:
+
+<span class="highlight">{{PASTE DEMO DATA OR YOUR OWN PROJECT DATA BELOW}}</span>
+
+OUTPUT FORMAT:
+- Project Profile (structured table)
+- Data Completeness Score (with field-by-field breakdown)
+- Feasibility Flags (site, workforce, financial, timeline)
+- Information Gaps (prioritized list)
+- Community Comparison Matrix (if applicable)<button class="copy-btn" onclick="copyBlock('prompt1')">Copy</button></div>
+  </div>
+
+  <div class="card">
+    <h3>Demo Data &mdash; Step 1: Company &amp; Project Profile</h3>
+    <span class="badge badge-accent" style="margin-bottom:0.75rem; display:inline-block;">SYNTHETIC DATA &bull; Lone Star Advanced Manufacturing</span>
+    <div class="data-block" id="data1">PROJECT INTAKE DATA — "Project Lone Star"
+============================================
+
+COMPANY INFORMATION:
+• Company: Lone Star Advanced Manufacturing, LLC (LSAM)
+• Industry: Advanced manufacturing — precision aerospace components
+• NAICS Code: 332710 (Machine Shops; Turned Product; Screw, Nut, and Bolt Manufacturing)
+• Headquarters: Current operations in Tulsa, OK
+• Years in Operation: 12 years (founded 2014)
+• Annual Revenue: $420 million
+• Credit Rating: BBB+ (S&P equivalent)
+• Publicly Traded: NASDAQ (ticker: LSAM)
+• Employees (Current): 1,280 across 2 existing facilities
+
+PROJECT SPECIFICATIONS:
+• Project Type: New greenfield facility (expansion, not relocation)
+• Project Codename: Project Lone Star
+• Total Capital Investment: $185,000,000
+  - Land & Site Development: $18,000,000
+  - Building & Improvements: $77,000,000
+  - Machinery & Equipment: $72,000,000
+  - Soft Costs (engineering, permits, FF&E): $18,000,000
+• Site Requirements: 45 acres minimum
+• Building: 250,000 sq ft initial, expandable to 400,000 sq ft
+• Utilities: 5MW electrical, 2M gallons/day water, natural gas
+
+EMPLOYMENT PLAN:
+• Total Direct Jobs at Full Buildout: 340
+• Phase 1 (Operational Q1 2029): 180 jobs
+• Phase 2 (Complete Q4 2030): +160 jobs (340 total)
+• Average Annual Salary: $68,500
+• Salary Range: $42,000 (entry-level production) to $145,000 (senior engineers)
+• Median Salary: $62,000
+• Benefits Package: Valued at 32% of base salary
+• Job Breakdown:
+  - Production/Assembly (165 positions): Avg $52,000
+  - Skilled Trades/Technicians (85 positions): Avg $68,000
+  - Engineering/Technical (55 positions): Avg $105,000
+  - Management/Admin (35 positions): Avg $92,000
+
+TARGET COMMUNITIES (3 sites under consideration):
+1. Cedar Ridge, TX (Pop. 85,000) — Central Texas
+   - 52-acre site available in Cedar Ridge Industrial Park
+   - 15 minutes from I-35 corridor
+   - Community college with manufacturing program
+
+2. Palo Duro Springs, TX (Pop. 42,000) — Texas Panhandle
+   - 60-acre greenfield site, rail-served
+   - Lower land costs, strong wind energy access
+   - Smaller labor shed, limited technical workforce
+
+3. Brazos Crossing, TX (Pop. 120,000) — Gulf Coast Corridor
+   - 48-acre site in existing industrial district
+   - Port access within 45 minutes
+   - Largest labor force but higher cost of living
+
+PROJECT TIMELINE:
+• Site Selection Decision: Q3 2026
+• Land Acquisition & Permitting: Q4 2026
+• Construction Start: Q1 2027
+• Phase 1 Operational: Q1 2029
+• Phase 2 Complete: Q4 2030
+• Full Stabilization: Q2 2031
+
+INCENTIVE REQUEST:
+• 10-year property tax abatement (Chapter 312): Requesting 75-100%
+• Sales tax rebate on construction materials
+• Type A/B EDC Grant: $2,500,000
+• Workforce Training Reimbursement: Up to $850,000
+• Infrastructure support: Road, water/sewer, electrical as needed<button class="copy-btn" onclick="copyBlock('data1')">Copy</button></div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!--                    STEP 2: ECONOMIC IMPACT                       -->
+<!-- ================================================================ -->
+<div class="section-panel" id="step2">
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">2</div>
+      <div>
+        <h2>Economic Impact Analyst</h2>
+        <span class="badge badge-primary">Multiplier &amp; Regional Analysis</span>
+      </div>
+    </div>
+
+    <div class="role-card">
+      <div class="role-title">AI Role: Regional Economic Impact Analyst</div>
+      <div class="role-desc">You are a Regional Economic Impact Analyst specializing in IMPLAN-style input-output modeling for Texas metropolitan and rural economies. Your task is to estimate the total economic footprint of this project — direct, indirect, and induced effects — and contextualize the impact within the regional economy.</div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h4>Deliverables</h4>
+        <ul class="deliverables-list">
+          <li>Direct / Indirect / Induced impact table</li>
+          <li>Employment multiplier analysis</li>
+          <li>Total regional GDP contribution</li>
+          <li>Construction phase impact (temporary)</li>
+          <li>Annual operational impact (ongoing)</li>
+          <li>Labor market absorption assessment</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Required Inputs</h4>
+        <ul class="deliverables-list">
+          <li>Project profile from Step 1</li>
+          <li>Regional economic multipliers</li>
+          <li>Labor force &amp; unemployment data</li>
+          <li>Supply chain sourcing assumptions</li>
+          <li>Construction phase parameters</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Prompt Template &mdash; Step 2</h3>
+    <div class="prompt-block" id="prompt2">You are a Regional Economic Impact Analyst specializing in IMPLAN-style input-output modeling for Texas economies.
+
+Using the project profile from Step 1 and the regional economic data below, produce a full economic impact analysis including:
+
+1. DIRECT IMPACTS: Jobs, payroll, capital investment
+2. INDIRECT IMPACTS: Supply chain employment and spending
+3. INDUCED IMPACTS: Consumer spending effects from new household income
+4. CONSTRUCTION PHASE: Temporary employment and spending impacts
+5. LABOR MARKET ANALYSIS: Can the regional workforce absorb this project?
+6. TOTAL ECONOMIC FOOTPRINT: Combined annual GDP contribution at full operation
+
+Apply the multipliers provided. Show your math for each calculation.
+
+<span class="highlight">{{PASTE STEP 2 DEMO DATA OR YOUR OWN REGIONAL ECONOMIC DATA BELOW}}</span>
+
+OUTPUT FORMAT:
+- Economic Impact Summary Table (Direct / Indirect / Induced / Total)
+- Construction Phase Impact Table
+- Annual Operational Impact Table
+- Labor Market Absorption Assessment
+- Key Assumptions & Data Sources<button class="copy-btn" onclick="copyBlock('prompt2')">Copy</button></div>
+  </div>
+
+  <div class="card">
+    <h3>Demo Data &mdash; Step 2: Regional Economic Parameters</h3>
+    <span class="badge badge-accent" style="margin-bottom:0.75rem; display:inline-block;">SYNTHETIC DATA &bull; Regional Multipliers &amp; Context</span>
+    <div class="data-block" id="data2">REGIONAL ECONOMIC DATA — Step 2
+==================================
+
+ECONOMIC MULTIPLIERS (IMPLAN-style, for NAICS 332710 in Central Texas):
+• Employment Multiplier: 2.35
+  (For every 1 direct job, 1.35 additional indirect + induced jobs created)
+• Output Multiplier: 1.92
+• Earnings Multiplier: 1.78
+• Value-Added Multiplier: 1.85
+
+REGIONAL LABOR FORCE DATA:
+                        Cedar Ridge MSA    Palo Duro Springs    Brazos Crossing MSA
+Labor Force:            38,500             18,200               56,800
+Unemployment Rate:      3.8%               4.2%                 3.5%
+Unemployed Workers:     1,463              764                  1,988
+Mfg Employment Share:   14.2%              8.7%                 18.5%
+Median Household Inc:   $58,400            $49,200              $64,800
+Pop Growth (5yr):       +12.3%             +2.1%                +8.7%
+
+SUPPLY CHAIN ASSUMPTIONS:
+• Regional procurement (within 100-mile radius): 35% of material inputs
+• Annual material input spending: $48,000,000
+• Estimated local procurement: $16,800,000/year
+• Local supplier sectors: metal fabrication, logistics, industrial gases, packaging
+
+CONSTRUCTION PHASE PARAMETERS:
+• Duration: 18 months (Q1 2027 — Q2 2028)
+• Peak Construction Workers: 450
+• Average construction wage: $58,000/year
+• Local construction spending: $95,000,000
+• Construction multiplier (temporary): 1.65
+
+ANNUAL OPERATIONAL SPENDING (Non-Payroll):
+• Local procurement: $28,000,000
+• Utilities: $8,500,000
+• Professional services (legal, accounting, IT): $3,200,000
+• Maintenance & repair: $4,100,000
+• Transportation & logistics: $6,800,000
+• Total annual local operational spend: $50,600,000<button class="copy-btn" onclick="copyBlock('data2')">Copy</button></div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!--                    STEP 3: TAX REVENUE                           -->
+<!-- ================================================================ -->
+<div class="section-panel" id="step3">
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">3</div>
+      <div>
+        <h2>Tax Revenue Analyst</h2>
+        <span class="badge badge-primary">Fiscal Impact &amp; Abatement Analysis</span>
+      </div>
+    </div>
+
+    <div class="role-card">
+      <div class="role-title">AI Role: Texas Municipal Finance &amp; Tax Revenue Analyst</div>
+      <div class="role-desc">You are a Texas Municipal Finance and Tax Revenue Analyst with deep expertise in property tax, sales tax, and Chapter 312/313 abatement structures. Your task is to build a 10-year tax revenue projection — both gross (without incentives) and net (after abatements) — and assess the fiscal impact on all overlapping taxing jurisdictions.</div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h4>Deliverables</h4>
+        <ul class="deliverables-list">
+          <li>10-year gross tax revenue projection</li>
+          <li>10-year net tax revenue (after abatements)</li>
+          <li>Abatement cost schedule (value forgone)</li>
+          <li>Revenue vs. public cost comparison</li>
+          <li>School district fiscal impact analysis</li>
+          <li>Infrastructure cost amortization</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Required Inputs</h4>
+        <ul class="deliverables-list">
+          <li>Overlapping property tax rates</li>
+          <li>Assessed value schedule by year</li>
+          <li>Personal property depreciation</li>
+          <li>Sales tax rates &amp; employee spending</li>
+          <li>Abatement terms (Ch. 312 specifics)</li>
+          <li>Infrastructure costs &amp; bond terms</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Prompt Template &mdash; Step 3</h3>
+    <div class="prompt-block" id="prompt3">You are a Texas Municipal Finance and Tax Revenue Analyst with deep expertise in property tax, sales tax, and Chapter 312 abatement structures.
+
+Using the project profile from Step 1 and the fiscal data below, build a comprehensive tax revenue analysis:
+
+1. 10-YEAR PROPERTY TAX PROJECTION: Gross revenue by taxing jurisdiction per year
+2. ABATEMENT COST SCHEDULE: Revenue forgone under Ch. 312 terms
+3. NET TAX REVENUE: Gross minus abatement value, by year
+4. SALES TAX REVENUE: From employee spending and construction
+5. SCHOOL DISTRICT IMPACT: New students, per-pupil costs, state funding implications
+6. INFRASTRUCTURE COST ANALYSIS: Bond payments vs. new revenue
+7. MUNICIPAL BUDGET IMPACT: Net fiscal position of the city by year
+
+Show all calculations. Use the specific tax rates provided — do not use generic state averages.
+
+<span class="highlight">{{PASTE STEP 3 DEMO DATA OR YOUR OWN TAX/FISCAL DATA BELOW}}</span>
+
+OUTPUT FORMAT:
+- 10-Year Revenue Projection Table (by jurisdiction, by year)
+- Abatement Value Schedule
+- Net Revenue Summary
+- School District Impact Statement
+- Municipal Fiscal Impact Statement<button class="copy-btn" onclick="copyBlock('prompt3')">Copy</button></div>
+  </div>
+
+  <div class="card">
+    <h3>Demo Data &mdash; Step 3: Tax &amp; Fiscal Parameters</h3>
+    <span class="badge badge-accent" style="margin-bottom:0.75rem; display:inline-block;">SYNTHETIC DATA &bull; Cedar Ridge Tax Structure</span>
+    <div class="data-block" id="data3">TAX & FISCAL DATA — Step 3 (Cedar Ridge, TX)
+================================================
+
+PROPERTY TAX RATES (per $100 assessed valuation):
+• City of Cedar Ridge:           $0.4875
+• Ridgeline County:              $0.3950
+• Cedar Ridge ISD (M&O):         $0.8967
+• Cedar Ridge ISD (I&S):         $0.2850
+• Cedar Ridge MUD #4:            $0.0840
+• Ridgeline County Hospital:     $0.0500
+• TOTAL Overlapping Rate:        $2.1982 per $100
+
+ASSESSED VALUE SCHEDULE (Real Property — Building & Improvements):
+• Year 1 (2027, under construction):  $48,000,000
+• Year 2 (2028, partial operation):   $142,000,000
+• Year 3 (2029, full value):          $185,000,000
+• Years 4-10: 2.5% annual appreciation on Year 3 base
+• Land value (not abated): $18,000,000 (flat)
+
+PERSONAL PROPERTY (Machinery & Equipment):
+• Initial value: $72,000,000
+• Depreciation for tax purposes: 10% per year (straight-line basis)
+• Not subject to Ch. 312 abatement in this agreement
+
+CHAPTER 312 ABATEMENT TERMS:
+• Applies to: Real property improvements only (not land, not personal property)
+• Abatement percentage: 75% for 10 years
+• Taxing jurisdictions participating: City, County
+• School district: NOT participating in abatement
+• Special districts: NOT participating in abatement
+• Abatement start: Year 2 (first full year of assessed value)
+
+SALES TAX STRUCTURE:
+• State: 6.25%
+• City of Cedar Ridge: 1.50%
+• Type A EDC: 0.50%
+• Type B EDC: 0.50%
+• Total: 8.25% (at cap)
+
+EMPLOYEE SPENDING IN COMMUNITY:
+• Estimated annual taxable spending per employee: $14,200
+  (groceries, retail, dining, fuel, personal services)
+• Applies to direct employees only for conservative estimate
+• Ramp: Phase 1 employees in Year 2, full workforce by Year 4
+
+INFRASTRUCTURE COSTS TO CITY:
+• FM 2410 road improvements:          $4,800,000
+• Water main extension (16"):         $1,200,000
+• Sewer trunk line extension:         $900,000
+• Electrical substation upgrade:      $1,500,000
+• TOTAL Infrastructure Investment:    $8,400,000
+• Financing: 20-year general obligation bonds at 4.2% interest
+• Annual debt service: ~$630,000/year
+• Total cost with interest: ~$12,600,000
+
+SCHOOL DISTRICT IMPACT:
+• Estimated new school-age children by Year 5: 95
+  (Based on 0.28 school-age children per new household)
+• Per-pupil operating cost: $11,200/year
+• Additional capital cost: Estimated $2,800/pupil (one-time)
+• State funding: Cedar Ridge ISD is a Chapter 49 district
+  (subject to recapture — "Robin Hood" provision)
+• Estimated state recapture rate: 38% of new M&O revenue<button class="copy-btn" onclick="copyBlock('data3')">Copy</button></div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!--                    STEP 4: COST-BENEFIT SCENARIOS                -->
+<!-- ================================================================ -->
+<div class="section-panel" id="step4">
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">4</div>
+      <div>
+        <h2>Cost-Benefit Scenario Modeler</h2>
+        <span class="badge badge-primary">NPV Analysis &amp; Sensitivity Testing</span>
+      </div>
+    </div>
+
+    <div class="role-card">
+      <div class="role-title">AI Role: Senior Cost-Benefit Scenario Modeler</div>
+      <div class="role-desc">You are a Senior Cost-Benefit Scenario Modeler who builds 10-year NPV models comparing incentive packages against projected public returns. Your task is to model three scenarios, calculate breakeven years, run sensitivity analysis, and determine the benefit-cost ratio under each scenario.</div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h4>Deliverables</h4>
+        <ul class="deliverables-list">
+          <li>Three scenario models (conservative / base / optimistic)</li>
+          <li>10-year NPV analysis for each scenario</li>
+          <li>Breakeven year calculation</li>
+          <li>Benefit-cost ratio (BCR) for each scenario</li>
+          <li>Sensitivity analysis on 2+ key variables</li>
+          <li>Risk-adjusted recommendation</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Required Inputs</h4>
+        <ul class="deliverables-list">
+          <li>Tax revenue projections from Step 3</li>
+          <li>Total public cost of incentives</li>
+          <li>Discount rate</li>
+          <li>Scenario variation parameters</li>
+          <li>Clawback provisions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Prompt Template &mdash; Step 4</h3>
+    <div class="prompt-block" id="prompt4">You are a Senior Cost-Benefit Scenario Modeler who builds 10-year NPV models comparing public incentive costs against projected public returns.
+
+Using the tax revenue analysis from Step 3 and the scenario parameters below, build a complete cost-benefit model:
+
+1. THREE SCENARIOS: Conservative (A), Base Case (B), Optimistic (C)
+2. NPV ANALYSIS: 10-year net present value of public benefits minus public costs at 3.5% real discount rate
+3. BREAKEVEN ANALYSIS: In which year does cumulative net benefit turn positive under each scenario?
+4. BENEFIT-COST RATIO: Total discounted benefits / total discounted costs for each scenario
+5. SENSITIVITY ANALYSIS: Test impact of ±20% variation in (a) job creation and (b) assessed property value
+6. RISK ASSESSMENT: What must go right for the base case to hold? What are the downside risks?
+
+Show all calculations. Present NPV in a year-by-year table.
+
+<span class="highlight">{{PASTE STEP 4 DEMO DATA OR YOUR OWN SCENARIO PARAMETERS BELOW}}</span>
+
+OUTPUT FORMAT:
+- Scenario Comparison Dashboard
+- 10-Year NPV Tables (one per scenario)
+- Breakeven Analysis Chart Description
+- Sensitivity Analysis Matrix
+- Risk Assessment & Recommendation<button class="copy-btn" onclick="copyBlock('prompt4')">Copy</button></div>
+  </div>
+
+  <div class="card">
+    <h3>Demo Data &mdash; Step 4: Scenario Parameters</h3>
+    <span class="badge badge-accent" style="margin-bottom:0.75rem; display:inline-block;">SYNTHETIC DATA &bull; Three-Scenario Framework</span>
+    <div class="data-block" id="data4">SCENARIO PARAMETERS — Step 4
+================================
+
+DISCOUNT RATE: 3.5% (real, per CTED standard methodology)
+
+SCENARIO A — CONSERVATIVE:
+• Jobs: 75% of target = 255 direct jobs at full buildout
+• Capital Investment: 90% of stated = $166,500,000
+• Phase 2 delayed by 12 months (complete Q4 2031 instead of Q4 2030)
+• Employment multiplier reduced to 2.0 (from 2.35)
+• Employee spending: $12,000/person (reduced from $14,200)
+• Property appreciation: 1.5%/year (reduced from 2.5%)
+• Rationale: Company hits headwinds — slower hiring, reduced scope
+
+SCENARIO B — BASE CASE:
+• Jobs: 100% = 340 direct jobs per original projections
+• Capital Investment: 100% = $185,000,000
+• Timeline: As stated in Step 1
+• All multipliers and spending assumptions as provided in Steps 2-3
+• Property appreciation: 2.5%/year
+
+SCENARIO C — OPTIMISTIC:
+• Jobs: 115% of target = 391 direct jobs
+• Capital Investment: 110% = $203,500,000
+• Phase 2 accelerated by 6 months (complete Q2 2030)
+• Employment multiplier: 2.6
+• Employee spending: $16,000/person
+• Property appreciation: 3.5%/year
+• Rationale: Strong demand drives expansion beyond initial plan
+
+TOTAL PUBLIC COST OF INCENTIVES (Base Case):
+• Ch. 312 Abatement (10 years, city + county only):
+  Estimated forgone revenue: ~$8,200,000 over 10 years
+• Type A/B EDC Grant: $2,500,000 (paid Year 1)
+• Workforce Training Reimbursement: $850,000 (paid Years 2-3)
+• Infrastructure Investment: $8,400,000 gross / ~$12,600,000 with interest
+  (Annual debt service $630,000 x 20 years, but only 10-year CBA window)
+  10-year infrastructure cost: $6,300,000 in debt service
+• TOTAL PUBLIC INVESTMENT (10-year nominal): ~$17,850,000
+• TOTAL PUBLIC INVESTMENT (10-year NPV at 3.5%): ~$15,900,000
+
+BENEFIT CATEGORIES TO MODEL:
+1. Direct property tax revenue (net of abatements)
+2. Direct sales tax revenue (from employee spending)
+3. Indirect/induced tax revenue (from multiplier jobs' spending)
+4. Utility revenue (net of cost to serve)
+5. Permit and fee revenue (building permits, impact fees)
+6. Surrounding property value increase ("halo effect")
+   - Estimated 2% increase in assessed values within 1-mile radius
+   - Estimated affected assessed value base: $180,000,000
+7. Reduced unemployment costs (avoided social services)
+8. Workforce skill upgrading value (estimated at $2,500/trained worker)
+
+CLAWBACK PROVISIONS:
+• If employment < 80% of target for 2 consecutive years:
+  Pro-rata repayment of EDC grant required
+• If facility closes within 7 years:
+  Full recapture of abatement value
+• Infrastructure: No clawback (public asset regardless)
+• Workforce training: No clawback (skills remain in community)<button class="copy-btn" onclick="copyBlock('data4')">Copy</button></div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!--                    STEP 5: BOARD PRESENTATION                    -->
+<!-- ================================================================ -->
+<div class="section-panel" id="step5">
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">5</div>
+      <div>
+        <h2>Board Presentation Specialist</h2>
+        <span class="badge badge-primary">Executive Communication &amp; Persuasion</span>
+      </div>
+    </div>
+
+    <div class="role-card">
+      <div class="role-title">AI Role: Board Presentation Specialist</div>
+      <div class="role-desc">You are a Board Presentation Specialist who translates complex CBA data into clear, persuasive narratives for EDC boards, city councils, and county commissioners courts. Your task is to take the quantitative analysis from Steps 1&ndash;4 and produce presentation-ready deliverables that any board member can understand in 20 minutes.</div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h4>Deliverables</h4>
+        <ul class="deliverables-list">
+          <li>1-page executive summary</li>
+          <li>Key talking points (5&ndash;7 bullets)</li>
+          <li>Risk disclosure language</li>
+          <li>Visualization/chart recommendations</li>
+          <li>Board FAQ with prepared responses (5+ questions)</li>
+          <li>Motion language for approval</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Required Inputs</h4>
+        <ul class="deliverables-list">
+          <li>All analysis from Steps 1&ndash;4</li>
+          <li>Board composition &amp; known concerns</li>
+          <li>Comparable past projects</li>
+          <li>Presentation format &amp; time allocation</li>
+          <li>Legal disclosure requirements</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Prompt Template &mdash; Step 5</h3>
+    <div class="prompt-block" id="prompt5">You are a Board Presentation Specialist who translates complex economic data into clear, persuasive narratives for EDC boards, city councils, and county commissioners courts.
+
+Using all analysis produced in Steps 1-4, create board-ready presentation materials:
+
+1. EXECUTIVE SUMMARY: One page, plain language, covering investment, jobs, fiscal impact, incentive cost, and ROI
+2. TALKING POINTS: 5-7 key messages a presenter should emphasize
+3. RISK DISCLOSURE: Language meeting Texas Local Government Code Ch. 501 requirements
+4. VISUALIZATION RECOMMENDATIONS: Describe 3-4 charts/tables that should be created
+5. BOARD FAQ: At least 7 anticipated questions with prepared responses, tailored to the board composition described below
+6. MOTION LANGUAGE: Draft resolution language for board approval
+
+Tailor the tone and emphasis to the specific audience described in the context data below.
+
+<span class="highlight">{{PASTE STEP 5 DEMO DATA OR YOUR OWN PRESENTATION CONTEXT BELOW}}</span>
+
+OUTPUT FORMAT:
+- Executive Summary (formatted for 1 page)
+- Talking Points (bulleted)
+- Risk Disclosure Statement
+- Recommended Visualizations (with descriptions)
+- Board FAQ (Q&A format)
+- Draft Motion Language<button class="copy-btn" onclick="copyBlock('prompt5')">Copy</button></div>
+  </div>
+
+  <div class="card">
+    <h3>Demo Data &mdash; Step 5: Presentation Context</h3>
+    <span class="badge badge-accent" style="margin-bottom:0.75rem; display:inline-block;">SYNTHETIC DATA &bull; Board &amp; Presentation Context</span>
+    <div class="data-block" id="data5">PRESENTATION CONTEXT — Step 5
+================================
+
+APPROVING BODIES (three separate presentations):
+1. Cedar Ridge EDC Board of Directors (7 members) — recommending body
+2. Cedar Ridge City Council (5 members) — final approval on Ch. 312 & Ch. 380
+3. Ridgeline County Commissioners Court (5 members) — county abatement approval
+
+EDC BOARD COMPOSITION:
+• Chair: Martha Jennings — retired community banker, 30 years in Cedar Ridge
+• Vice Chair: David Chen — commercial real estate developer
+• Member: Patricia Alvarez — retired school superintendent (Cedar Ridge ISD)
+• Member: Robert "Bobby" Stanton — owner of Stanton Feed & Supply (small business)
+• Member: Dr. Karen Washington — administrator at Ridgeline County Hospital
+• Member: James Whitfield III — cattle rancher, 4th generation
+• Member: Lisa Okonkwo — HR director at existing Cedar Ridge manufacturer
+
+KNOWN CONCERNS FROM PREVIOUS MEETINGS:
+• Patricia Alvarez: Will this hurt the school district? What about the tax
+  base impact with Ch. 312 abatement and recapture?
+• Bobby Stanton: Will these jobs actually go to Cedar Ridge residents, or
+  will the company bring in workers from Tulsa?
+• James Whitfield: Water availability — Cedar Ridge had Stage 2 drought
+  restrictions two of the last five years. Can we guarantee 2M gal/day?
+• Dr. Washington: Will the hospital see increased demand without additional
+  funding? What about industrial accident risk?
+• General: "How does this compare to our last two deals?"
+
+COMPARABLE DEALS (Cedar Ridge EDC):
+1. "Project Bluebonnet" (2023):
+   - Food processing facility, 200 jobs, $95M investment
+   - Ch. 312: 70% abatement for 8 years, EDC grant $1.2M
+   - Status: Operational, at 92% of job target
+   - Board vote: 6-1 (Whitfield opposed, cited water concerns)
+
+2. "Project Mustang" (2024):
+   - Distribution center, 450 jobs, $62M investment
+   - Ch. 312: 50% abatement for 7 years, EDC grant $800K
+   - Status: Under construction, hiring ahead of schedule
+   - Board vote: 7-0 (amended to add stronger clawback language)
+
+PRESENTATION FORMAT:
+• 20-minute formal presentation + 15-minute Q&A
+• Presentation room: Cedar Ridge City Hall, Council Chambers
+• Materials: Printed packet for each board member + projected slides
+• Legal counsel present for procedural questions
+
+LEGAL REQUIREMENTS:
+• Per Texas Local Government Code Ch. 501: All incentive terms must be
+  publicly disclosed before vote
+• Ch. 312: Requires public hearing with 7-day published notice
+• Company name may remain confidential until agreement is executed
+  (use "Project Lone Star" in public materials)
+• Performance agreement must be filed with Texas Comptroller within
+  30 days of execution<button class="copy-btn" onclick="copyBlock('data5')">Copy</button></div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!--                    STEP 6: QUALITY ASSURANCE                     -->
+<!-- ================================================================ -->
+<div class="section-panel" id="step6">
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">6</div>
+      <div>
+        <h2>Quality Assurance Reviewer</h2>
+        <span class="badge badge-primary">Peer Audit &amp; Standards Compliance</span>
+      </div>
+    </div>
+
+    <div class="role-card">
+      <div class="role-title">AI Role: QA Reviewer &amp; Peer Auditor</div>
+      <div class="role-desc">You are a Quality Assurance Reviewer and peer auditor for economic development CBA reports, applying CTED certification standards. Your task is to review all deliverables from Steps 1&ndash;5, score them against the QC rubric, flag errors, and issue a pass/fail determination.</div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <h4>Deliverables</h4>
+        <ul class="deliverables-list">
+          <li>QC scorecard with weighted category scores</li>
+          <li>Error log (itemized findings)</li>
+          <li>Recommendations for revision</li>
+          <li>Pass / Fail determination</li>
+          <li>Certification readiness assessment</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Required Inputs</h4>
+        <ul class="deliverables-list">
+          <li>All deliverables from Steps 1&ndash;5</li>
+          <li>QC rubric (28 checkpoints)</li>
+          <li>Acceptable data sources list</li>
+          <li>Red flag thresholds</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Prompt Template &mdash; Step 6</h3>
+    <div class="prompt-block" id="prompt6">You are a Quality Assurance Reviewer and peer auditor for economic development CBA reports, applying CTED certification standards.
+
+Review ALL deliverables produced in Steps 1-5 against the QC rubric below. For each checkpoint, score as PASS or FAIL with a brief explanation.
+
+QC RUBRIC (28 checkpoints across 4 weighted categories):
+
+SPECIFICITY (40% weight):
+1. NAICS code and industry classification included
+2. Specific dollar amounts for all capital investment categories
+3. Job counts broken down by phase, skill level, and wage band
+4. Named community with specific tax rates (not generic averages)
+5. Specific abatement terms with Texas chapter references
+6. Infrastructure costs itemized by project type
+7. Timeline with quarterly or annual milestones
+8. Multiplier values cited with source methodology
+9. Discount rate stated and justified
+10. Clawback provisions with specific triggers
+11. Comparable projects referenced with actual figures
+
+COMPLETENESS (25% weight):
+12. All 6 workflow steps addressed
+13. Both cost side AND benefit side fully enumerated
+14. Three scenarios modeled (conservative / base / optimistic)
+15. Construction phase AND operational phase analyzed separately
+16. Direct, indirect, AND induced impacts all included
+17. School district impact specifically addressed
+18. Sensitivity analysis on at least 2 key variables
+
+MATH ACCURACY (20% weight):
+19. NPV calculation methodology correct
+20. Tax revenue math ties to stated rates and assessed values
+21. Multiplier math consistent (output = direct × multiplier)
+22. Abatement value correctly computed (rate × AV × abatement %)
+23. Benefit-cost ratio correctly calculated (benefits ÷ costs, not inverted)
+
+PRESENTATION (15% weight):
+24. Executive summary present and under 1 page
+25. Key findings stated in plain language (no unexplained jargon)
+26. Risk factors disclosed, not buried
+27. Visual/table recommendations included
+28. Board FAQ section with at least 5 anticipated questions
+
+SCORING:
+• Category Score = (items passed / total items) × 100
+• Overall = (Specificity × 0.40) + (Completeness × 0.25) + (Math × 0.20) + (Presentation × 0.15)
+• PASS threshold: 90% overall AND no single category below 70%
+
+RED FLAGS TO CHECK:
+• Benefit-cost ratio > 5:1 without explanation
+• Job creation cost > $75,000 per job
+• Payback period > 8 years on a 10-year abatement
+
+ACCEPTABLE DATA SOURCES:
+BLS, Texas Workforce Commission, Texas Comptroller, IMPLAN, EMSI/Lightcast,
+U.S. Census Bureau, local CAD records
+
+<span class="highlight">{{THE AI SHOULD REVIEW ALL OUTPUT FROM STEPS 1-5 ABOVE}}</span>
+
+OUTPUT FORMAT:
+- Checkpoint-by-Checkpoint Scorecard (28 items)
+- Category Scores & Overall Score
+- Error Log (itemized, with severity: Critical / Major / Minor)
+- Revision Recommendations
+- PASS / FAIL Determination<button class="copy-btn" onclick="copyBlock('prompt6')">Copy</button></div>
+  </div>
+
+  <div class="card">
+    <h3>Demo Data &mdash; Step 6: QA Parameters</h3>
+    <span class="badge badge-accent" style="margin-bottom:0.75rem; display:inline-block;">SYNTHETIC DATA &bull; QA Standards &amp; Thresholds</span>
+    <div class="data-block" id="data6">QA PARAMETERS — Step 6
+========================
+
+REVIEW STANDARDS:
+• Apply CTED Advanced ED Finance certification-level rigor
+• All math must be independently verifiable from stated inputs
+• Sources must be cited for any externally-derived data points
+• Projections must clearly distinguish between assumptions and calculations
+
+COMMON ERRORS TO FLAG:
+• Misapplied multipliers (e.g., using output multiplier for employment)
+• Double-counting indirect impacts (supplier jobs counted in both
+  direct and indirect categories)
+• Omitting infrastructure costs from the cost side of the BCR
+• Using gross tax revenue instead of net (after abatements)
+• Failing to discount future cash flows (using nominal instead of NPV)
+• Optimistic job ramp assumptions without phased justification
+• Ignoring school district recapture ("Robin Hood") in fiscal impact
+• Comparing 10-year benefits to single-year costs
+
+RED FLAG THRESHOLDS:
+• Benefit-Cost Ratio > 5.0:1 → Requires detailed justification
+• Job Creation Cost > $75,000/job → Above Texas average; explain
+• Payback Period > 8 years → Risky for a 10-year abatement
+• Employment multiplier > 3.0 → Unusually high; verify source
+• Property appreciation > 4%/year → Aggressive; justify
+
+ACCEPTABLE DATA SOURCES:
+• Bureau of Labor Statistics (BLS)
+• Texas Workforce Commission (TWC)
+• Texas Comptroller of Public Accounts
+• IMPLAN Economic Impact Modeling
+• EMSI / Lightcast labor market analytics
+• U.S. Census Bureau (ACS, Economic Census)
+• Local Central Appraisal District (CAD) records
+• Texas Education Agency (TEA) for school data
+
+QUALITY TIERS:
+• 95-100%: Exemplary — ready for board without revisions
+• 90-94%:  Passing — minor polish needed, no substantive issues
+• 80-89%:  Needs Revision — significant gaps, resubmit required
+• Below 80%: Failing — fundamental issues, major rework needed<button class="copy-btn" onclick="copyBlock('data6')">Copy</button></div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!--                    BOOTSTRAP PROMPT                              -->
+<!-- ================================================================ -->
+<div class="section-panel" id="bootstrap">
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge" style="background:var(--accent); color:var(--primary);">&#9733;</div>
+      <div>
+        <h2>Master Bootstrap Prompt</h2>
+        <span class="badge badge-accent">Copy &amp; Paste Into Any AI Assistant</span>
+      </div>
+    </div>
+
+    <div class="info-box gold">
+      <strong>How to use:</strong> Copy the entire prompt below and paste it into ChatGPT, Claude, Gemini, Copilot, or any AI assistant. The prompt activates a complete 6-step CBA workflow. The AI will walk you through each step, ask for data inputs, and produce board-ready deliverables.
+    </div>
+
+    <div class="prompt-block" id="bootstrapPrompt" style="max-height:700px;">You are now operating as the <span class="highlight">CTED-Certified Cost-Benefit Analysis Workflow Engine</span> — a team of six sequential economic development consultants who will guide a user through a complete fiscal impact and cost-benefit analysis for a business expansion or relocation project in Texas.
+
+You will proceed through 6 steps in order. At each step, you adopt a specific professional role, produce the required deliverables, and then ask the user to confirm before advancing to the next step.
+
+══════════════════════════════════════════
+STEP 1 — PROJECT INTAKE SPECIALIST
+══════════════════════════════════════════
+Role: Senior Economic Development Project Intake Specialist (15 years Texas EDC experience).
+Task: Organize raw project data into a structured profile. Assess data completeness (% of critical fields populated). Flag feasibility concerns as Red/Yellow/Green. Generate a missing information request list. If multiple communities, create a comparison matrix.
+Required data: Company name, NAICS code, capital investment breakdown, employment plan with wages, site requirements, timeline, incentive request.
+→ Ask the user to provide project data, then produce deliverables.
+
+══════════════════════════════════════════
+STEP 2 — ECONOMIC IMPACT ANALYST
+══════════════════════════════════════════
+Role: Regional Economic Impact Analyst (IMPLAN-style input-output modeling).
+Task: Calculate direct, indirect, and induced economic impacts. Analyze construction phase (temporary) and operational phase (ongoing) separately. Assess labor market absorption capacity. Estimate total annual GDP contribution.
+Required data: Regional employment/output/earnings multipliers, labor force statistics, supply chain sourcing %, construction parameters, annual operational spending.
+→ Ask for regional economic data, then produce impact tables with math shown.
+
+══════════════════════════════════════════
+STEP 3 — TAX REVENUE ANALYST
+══════════════════════════════════════════
+Role: Texas Municipal Finance & Tax Revenue Analyst (property tax, sales tax, Ch. 312 expert).
+Task: Build a 10-year tax revenue projection (gross and net of abatements) by taxing jurisdiction. Calculate abatement cost schedule. Analyze school district fiscal impact including recapture. Model infrastructure cost amortization vs. new revenue.
+Required data: Overlapping property tax rates, assessed value schedule, personal property depreciation, Ch. 312 terms, sales tax rates, employee spending estimates, infrastructure costs and bond terms, school district parameters.
+→ Ask for fiscal data, then produce year-by-year revenue tables. Use specific rates — never generic state averages.
+
+══════════════════════════════════════════
+STEP 4 — COST-BENEFIT SCENARIO MODELER
+══════════════════════════════════════════
+Role: Senior CBA Modeler (NPV analysis, scenario modeling).
+Task: Build three scenarios — Conservative (reduced jobs/investment, delayed timeline), Base Case (as projected), Optimistic (expanded scope, accelerated timeline). For each: 10-year NPV at 3.5% real discount rate, breakeven year, benefit-cost ratio. Run sensitivity analysis on ±20% variation in jobs and property values. Assess risks and clawback implications.
+Required data: Scenario variation parameters, total public cost of incentives itemized, benefit categories, clawback provisions, discount rate.
+→ Ask for scenario parameters, then produce NPV tables and BCR comparison.
+
+══════════════════════════════════════════
+STEP 5 — BOARD PRESENTATION SPECIALIST
+══════════════════════════════════════════
+Role: Board Presentation Specialist (EDC boards, city councils, commissioners courts).
+Task: Produce a 1-page executive summary in plain language. Write 5-7 key talking points. Draft risk disclosure language per Texas Local Government Code Ch. 501. Recommend 3-4 visualizations. Write a Board FAQ with 7+ anticipated questions and answers tailored to the specific board composition. Draft motion/resolution language.
+Required data: Board composition and known concerns, comparable past deals, presentation format and time, legal disclosure requirements.
+→ Ask for presentation context, then produce all board-ready materials.
+
+══════════════════════════════════════════
+STEP 6 — QUALITY ASSURANCE REVIEWER
+══════════════════════════════════════════
+Role: QA Reviewer & Peer Auditor (CTED certification standards).
+Task: Review ALL output from Steps 1-5 against a 28-checkpoint rubric across 4 weighted categories:
+
+  • Specificity (40%): NAICS code, dollar specifics, job breakdowns, named community with rates, Ch. 312 terms, infrastructure itemization, timeline, multiplier sources, discount rate, clawbacks, comparable projects
+  • Completeness (25%): All 6 steps addressed, both costs and benefits enumerated, 3 scenarios, construction + operations separated, direct/indirect/induced included, school district addressed, sensitivity analysis done
+  • Math Accuracy (20%): NPV methodology correct, tax math ties to rates, multiplier math consistent, abatement value correct, BCR formula correct
+  • Presentation (15%): Executive summary under 1 page, plain language, risks disclosed, visuals recommended, FAQ with 5+ questions
+
+Scoring: Category Score = (passed/total) × 100. Overall = (Spec × 0.40) + (Comp × 0.25) + (Math × 0.20) + (Pres × 0.15). PASS = 90% overall AND no category below 70%.
+
+Red flags: BCR > 5:1 without justification, job cost > $75K, payback > 8 years.
+→ Self-review all prior output. Produce scorecard, error log, and PASS/FAIL determination.
+
+══════════════════════════════════════════
+OPERATING RULES
+══════════════════════════════════════════
+1. Complete each step fully before moving to the next.
+2. Show your math — all calculations must be transparent and verifiable.
+3. Use Texas-specific legal references (Ch. 312, Ch. 380/381, Ch. 501, Ch. 49).
+4. All financial projections use a 10-year horizon.
+5. NPV calculations use a 3.5% real discount rate unless the user specifies otherwise.
+6. Clearly distinguish between assumptions and calculations.
+7. Cite data sources where applicable.
+8. At the end of Step 6, produce a FINAL SUMMARY DASHBOARD showing: total jobs, total investment, 10-year NPV (base case), BCR (base case), breakeven year, QC score, and PASS/FAIL status.
+
+Begin now. Introduce yourself and ask the user for Step 1 project data.<button class="copy-btn" onclick="copyBlock('bootstrapPrompt')">Copy</button></div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!--                    QC CHECKLIST                                  -->
+<!-- ================================================================ -->
+<div class="section-panel" id="qc">
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge" style="background:var(--success);">&#10003;</div>
+      <div>
+        <h2>Interactive QC Checklist</h2>
+        <span class="badge badge-success">Weighted Scoring Rubric &bull; 90% Pass Threshold</span>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>Instructions:</strong> Check each item that the AI&rsquo;s output satisfies. The score updates automatically. A deliverable passes with 90% overall <em>and</em> no single category below 70%.
+    </div>
+
+    <!-- Specificity 40% -->
+    <div class="qc-category" data-category="specificity">
+      <div class="qc-category-header">
+        <h3>Specificity</h3>
+        <div><span class="qc-weight">Weight: 40%</span> &nbsp; <span class="qc-cat-score" id="score-specificity">0 / 11</span></div>
+      </div>
+      <div class="qc-item"><input type="checkbox" id="qc1" onchange="calcQC()"><label for="qc1">1. NAICS code and industry classification included</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc2" onchange="calcQC()"><label for="qc2">2. Specific dollar amounts for all capital investment categories</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc3" onchange="calcQC()"><label for="qc3">3. Job counts broken down by phase, skill level, and wage band</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc4" onchange="calcQC()"><label for="qc4">4. Named community with specific local tax rates (not generic averages)</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc5" onchange="calcQC()"><label for="qc5">5. Specific abatement terms with Texas chapter references (Ch. 312, etc.)</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc6" onchange="calcQC()"><label for="qc6">6. Infrastructure costs itemized by project type</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc7" onchange="calcQC()"><label for="qc7">7. Timeline with quarterly or annual milestones</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc8" onchange="calcQC()"><label for="qc8">8. Multiplier values cited with source methodology</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc9" onchange="calcQC()"><label for="qc9">9. Discount rate stated and justified</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc10" onchange="calcQC()"><label for="qc10">10. Clawback provisions with specific triggers</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc11" onchange="calcQC()"><label for="qc11">11. Comparable projects referenced with actual figures</label></div>
+    </div>
+
+    <!-- Completeness 25% -->
+    <div class="qc-category" data-category="completeness">
+      <div class="qc-category-header">
+        <h3>Completeness</h3>
+        <div><span class="qc-weight">Weight: 25%</span> &nbsp; <span class="qc-cat-score" id="score-completeness">0 / 7</span></div>
+      </div>
+      <div class="qc-item"><input type="checkbox" id="qc12" onchange="calcQC()"><label for="qc12">12. All 6 workflow steps addressed</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc13" onchange="calcQC()"><label for="qc13">13. Both cost side AND benefit side fully enumerated</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc14" onchange="calcQC()"><label for="qc14">14. Three scenarios modeled (conservative / base / optimistic)</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc15" onchange="calcQC()"><label for="qc15">15. Construction phase AND operational phase analyzed separately</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc16" onchange="calcQC()"><label for="qc16">16. Direct, indirect, AND induced impacts all included</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc17" onchange="calcQC()"><label for="qc17">17. School district impact specifically addressed</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc18" onchange="calcQC()"><label for="qc18">18. Sensitivity analysis on at least 2 key variables</label></div>
+    </div>
+
+    <!-- Math Accuracy 20% -->
+    <div class="qc-category" data-category="math">
+      <div class="qc-category-header">
+        <h3>Math Accuracy</h3>
+        <div><span class="qc-weight">Weight: 20%</span> &nbsp; <span class="qc-cat-score" id="score-math">0 / 5</span></div>
+      </div>
+      <div class="qc-item"><input type="checkbox" id="qc19" onchange="calcQC()"><label for="qc19">19. NPV calculation methodology correct (discounting applied to correct years)</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc20" onchange="calcQC()"><label for="qc20">20. Tax revenue math ties to stated rates and assessed values</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc21" onchange="calcQC()"><label for="qc21">21. Multiplier math consistent (output = direct &times; multiplier)</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc22" onchange="calcQC()"><label for="qc22">22. Abatement value correctly computed (rate &times; AV &times; abatement %)</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc23" onchange="calcQC()"><label for="qc23">23. Benefit-cost ratio = total discounted benefits &divide; total discounted costs (not inverted)</label></div>
+    </div>
+
+    <!-- Presentation 15% -->
+    <div class="qc-category" data-category="presentation">
+      <div class="qc-category-header">
+        <h3>Presentation</h3>
+        <div><span class="qc-weight">Weight: 15%</span> &nbsp; <span class="qc-cat-score" id="score-presentation">0 / 5</span></div>
+      </div>
+      <div class="qc-item"><input type="checkbox" id="qc24" onchange="calcQC()"><label for="qc24">24. Executive summary present and under 1 page</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc25" onchange="calcQC()"><label for="qc25">25. Key findings stated in plain language (no unexplained jargon)</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc26" onchange="calcQC()"><label for="qc26">26. Risk factors disclosed, not buried</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc27" onchange="calcQC()"><label for="qc27">27. Visual / table recommendations included</label></div>
+      <div class="qc-item"><input type="checkbox" id="qc28" onchange="calcQC()"><label for="qc28">28. Board FAQ section with at least 5 anticipated questions</label></div>
+    </div>
+
+    <!-- Score Display -->
+    <div class="score-display" id="scoreDisplay">
+      <div class="score-number" id="overallScore">0%</div>
+      <div id="passFail" class="pass-fail-badge fail">NOT YET SCORED</div>
+      <div style="margin-top:1.5rem; text-align:left; max-width:500px; margin-left:auto; margin-right:auto;">
+        <div class="score-row">
+          <span class="label">Specificity (40%)</span>
+          <span class="bar"><div class="progress-bar-container"><div class="progress-bar-fill" id="bar-specificity" style="width:0%; background:var(--danger);"></div></div></span>
+          <span class="pct" id="pct-specificity">0%</span>
+        </div>
+        <div class="score-row">
+          <span class="label">Completeness (25%)</span>
+          <span class="bar"><div class="progress-bar-container"><div class="progress-bar-fill" id="bar-completeness" style="width:0%; background:var(--danger);"></div></div></span>
+          <span class="pct" id="pct-completeness">0%</span>
+        </div>
+        <div class="score-row">
+          <span class="label">Math Accuracy (20%)</span>
+          <span class="bar"><div class="progress-bar-container"><div class="progress-bar-fill" id="bar-math" style="width:0%; background:var(--danger);"></div></div></span>
+          <span class="pct" id="pct-math">0%</span>
+        </div>
+        <div class="score-row">
+          <span class="label">Presentation (15%)</span>
+          <span class="bar"><div class="progress-bar-container"><div class="progress-bar-fill" id="bar-presentation" style="width:0%; background:var(--danger);"></div></div></span>
+          <span class="pct" id="pct-presentation">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-group" style="justify-content:center; margin-top:1.5rem;">
+      <button class="btn btn-outline" onclick="resetQC()">Reset Checklist</button>
+      <button class="btn btn-primary" onclick="window.print()">Print Scorecard</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!--                    TEACHING REFERENCE                            -->
+<!-- ================================================================ -->
+<div class="section-panel" id="teaching">
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge" style="background:var(--primary-light);">&#9670;</div>
+      <div>
+        <h2>Teaching Reference</h2>
+        <span class="badge badge-primary">CTED Curriculum Mapping &amp; Classroom Exercises</span>
+      </div>
+    </div>
+
+    <h3>CTED Curriculum &rarr; Workflow Step Mapping</h3>
+    <div style="overflow-x:auto;">
+    <table class="curriculum-table">
+      <thead>
+        <tr>
+          <th>CTED Curriculum Topic</th>
+          <th>Workflow Step(s)</th>
+          <th>Key Learning Objective</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Business Retention &amp; Expansion</strong></td>
+          <td>Step 1 — Intake</td>
+          <td>Systematic project intake, data gathering, and feasibility screening</td>
+        </tr>
+        <tr>
+          <td><strong>Economic &amp; Community Development Theory</strong></td>
+          <td>Step 2 — Impact</td>
+          <td>Input-output modeling, multiplier analysis, regional economic effects</td>
+        </tr>
+        <tr>
+          <td><strong>Economic Development Finance</strong></td>
+          <td>Steps 3, 4</td>
+          <td>Texas tax structures, incentive valuation, NPV modeling</td>
+        </tr>
+        <tr>
+          <td><strong>Public Finance &amp; Incentives</strong></td>
+          <td>Steps 3, 4</td>
+          <td>Ch. 312, Ch. 380/381, Type A/B structures, abatement math</td>
+        </tr>
+        <tr>
+          <td><strong>Real Estate &amp; Site Selection</strong></td>
+          <td>Steps 1, 2</td>
+          <td>Site requirements analysis, community comparison, infrastructure</td>
+        </tr>
+        <tr>
+          <td><strong>Workforce Development</strong></td>
+          <td>Steps 1, 2, 4</td>
+          <td>Wage analysis, labor force absorption, workforce training ROI</td>
+        </tr>
+        <tr>
+          <td><strong>Marketing &amp; Attraction</strong></td>
+          <td>Step 5 — Board Prep</td>
+          <td>Translating quantitative analysis into persuasive board narratives</td>
+        </tr>
+        <tr>
+          <td><strong>Legal &amp; Ethical Considerations</strong></td>
+          <td>Steps 5, 6</td>
+          <td>Disclosure requirements (Ch. 501), QA standards, clawback design</td>
+        </tr>
+        <tr>
+          <td><strong>Strategic Planning</strong></td>
+          <td>Steps 4, 5, 6</td>
+          <td>Scenario modeling, risk assessment, stakeholder communication</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3 style="margin-top:2rem;">TEDC Competency Alignment</h3>
+    <div class="grid-2" style="margin-bottom:1.5rem;">
+      <div class="card" style="margin-bottom:0;">
+        <h4>Analytical Competencies</h4>
+        <ul class="deliverables-list">
+          <li><strong>Step 2:</strong> Apply economic multiplier models to project data</li>
+          <li><strong>Step 3:</strong> Calculate overlapping tax revenue impacts</li>
+          <li><strong>Step 4:</strong> Build NPV models with scenario analysis</li>
+          <li><strong>Step 6:</strong> Evaluate analytical output for accuracy</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <h4>Communication Competencies</h4>
+        <ul class="deliverables-list">
+          <li><strong>Step 1:</strong> Organize complex data into structured formats</li>
+          <li><strong>Step 5:</strong> Translate technical analysis for lay audiences</li>
+          <li><strong>Step 5:</strong> Anticipate and prepare for board questions</li>
+          <li><strong>Step 6:</strong> Apply professional quality standards</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Suggested Classroom Exercises</h3>
+    <div class="card">
+      <ol style="padding-left:1.5rem;">
+        <li style="margin-bottom:1rem;">
+          <strong>Demo Run-Through (45 min):</strong> Students copy the bootstrap prompt into an AI assistant, feed the demo data step by step, and observe the full workflow. Discuss the AI output as a class after each step.
+        </li>
+        <li style="margin-bottom:1rem;">
+          <strong>Modify the Abatement (20 min):</strong> Change the Ch. 312 abatement from 75% to 50% in Step 3 data. Re-run Steps 3&ndash;4. Compare the change in breakeven year and BCR. Discussion: At what abatement level does the deal stop making sense?
+        </li>
+        <li style="margin-bottom:1rem;">
+          <strong>Stress Test (20 min):</strong> Use only the Conservative scenario from Step 4 but increase infrastructure costs by 30%. Does the deal still pass the QC checklist? What clawback terms would you add?
+        </li>
+        <li style="margin-bottom:1rem;">
+          <strong>Board Role-Play (30 min):</strong> Assign students the board member roles from Step 5 (banker, rancher, school superintendent, etc.). One student presents the executive summary. Board members ask questions from their character&rsquo;s perspective using the FAQ as a starting point.
+        </li>
+        <li style="margin-bottom:1rem;">
+          <strong>Peer Review (25 min):</strong> Pairs of students swap their AI-generated deliverables and score each other&rsquo;s output using the interactive QC checklist. Compare scores and discuss disagreements.
+        </li>
+        <li style="margin-bottom:1rem;">
+          <strong>Real Project Application (Homework):</strong> Students use the Data Input Checklist to collect real data from their own community&rsquo;s CAD, TWC, and budget records. Run the full workflow with real numbers. Bring the output to the next class session for peer review.
+        </li>
+      </ol>
+    </div>
+
+    <h3 style="margin-top:1rem;">Instructor Notes</h3>
+    <div class="info-box gold">
+      <strong>AI Literacy Integration:</strong> This toolkit teaches economic development <em>through</em> AI, not <em>about</em> AI. Students learn to: (1) structure inputs so AI produces useful outputs, (2) verify AI math rather than trust it blindly, (3) recognize when AI output needs human judgment (e.g., board sensitivity, water concerns), and (4) use the QC rubric as a professional standard regardless of whether analysis is human- or AI-generated.
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!--                    DATA INPUT CHECKLIST                          -->
+<!-- ================================================================ -->
+<div class="section-panel" id="datainput">
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge" style="background:var(--accent); color:var(--primary);">&#9998;</div>
+      <div>
+        <h2>Data Input Checklist</h2>
+        <span class="badge badge-accent">Fill In for Real Projects &bull; Printable</span>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>Take this home.</strong> Fill in the fields below with data from your own community and project. Then copy your answers into the workflow prompts in place of the demo data. Click &ldquo;Load Demo Data&rdquo; to see the Lone Star Advanced Manufacturing example, or &ldquo;Clear All&rdquo; to start fresh.
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-accent" onclick="loadDemoInputs()">Load Demo Data</button>
+      <button class="btn btn-outline" onclick="clearInputs()">Clear All</button>
+      <button class="btn btn-primary" onclick="window.print()">Print Checklist</button>
+    </div>
+
+    <div style="overflow-x:auto;">
+    <table class="input-table">
+      <thead>
+        <tr>
+          <th style="width:35%;">Data Field</th>
+          <th style="width:10%;">Status</th>
+          <th style="width:55%;">Your Project Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Company Information -->
+        <tr class="group-row"><td colspan="3">COMPANY INFORMATION (Step 1)</td></tr>
+        <tr><td>Company Legal Name</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="Lone Star Advanced Manufacturing, LLC"></td></tr>
+        <tr><td>NAICS Code</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="332710"></td></tr>
+        <tr><td>Industry Description</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="Advanced manufacturing — precision aerospace components"></td></tr>
+        <tr><td>Parent Company / Ownership</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="Publicly traded, NASDAQ (LSAM)"></td></tr>
+        <tr><td>Credit Rating / Financial Strength</td><td><span class="badge badge-optional">Optional</span></td><td><input type="text" class="di" data-demo="BBB+ (S&P equivalent)"></td></tr>
+        <tr><td>Current Locations</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="Tulsa, OK (2 facilities)"></td></tr>
+        <tr><td>Years in Operation</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="12 years (founded 2014)"></td></tr>
+        <tr><td>Annual Revenue</td><td><span class="badge badge-optional">Optional</span></td><td><input type="text" class="di" data-demo="$420,000,000"></td></tr>
+
+        <!-- Project Specs -->
+        <tr class="group-row"><td colspan="3">PROJECT SPECIFICATIONS (Step 1)</td></tr>
+        <tr><td>Project Type (New / Expansion / Relocation)</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="New greenfield facility (expansion)"></td></tr>
+        <tr><td>Capital Investment — Land &amp; Site</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="$18,000,000"></td></tr>
+        <tr><td>Capital Investment — Building</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="$77,000,000"></td></tr>
+        <tr><td>Capital Investment — Equipment</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="$72,000,000"></td></tr>
+        <tr><td>Capital Investment — Soft Costs</td><td><span class="badge badge-optional">Optional</span></td><td><input type="text" class="di" data-demo="$18,000,000"></td></tr>
+        <tr><td>Total Capital Investment</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="$185,000,000"></td></tr>
+        <tr><td>Site Size (Acres)</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="45 acres"></td></tr>
+        <tr><td>Building Size (Sq Ft)</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="250,000 sq ft (expandable to 400,000)"></td></tr>
+        <tr><td>Construction Timeline</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="Q1 2027 — Q2 2028 (18 months)"></td></tr>
+
+        <!-- Employment -->
+        <tr class="group-row"><td colspan="3">EMPLOYMENT (Steps 1–2)</td></tr>
+        <tr><td>Total Direct Jobs at Full Buildout</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="340"></td></tr>
+        <tr><td>Phase 1 Jobs &amp; Timeline</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="180 jobs by Q1 2029"></td></tr>
+        <tr><td>Phase 2+ Jobs &amp; Timeline</td><td><span class="badge badge-optional">Optional</span></td><td><input type="text" class="di" data-demo="+160 jobs by Q4 2030 (340 total)"></td></tr>
+        <tr><td>Average Annual Salary</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="$68,500"></td></tr>
+        <tr><td>Salary Range (Min / Max)</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="$42,000 — $145,000"></td></tr>
+        <tr><td>Median Salary</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="$62,000"></td></tr>
+        <tr><td>Benefits as % of Salary</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="32%"></td></tr>
+        <tr><td>Job Breakdown by Category</td><td><span class="badge badge-optional">Optional</span></td><td><textarea class="di" data-demo="Production/Assembly: 165 @ $52K avg&#10;Skilled Trades: 85 @ $68K avg&#10;Engineering: 55 @ $105K avg&#10;Management/Admin: 35 @ $92K avg"></textarea></td></tr>
+
+        <!-- Community Data -->
+        <tr class="group-row"><td colspan="3">COMMUNITY / SITE DATA (Steps 2–3)</td></tr>
+        <tr><td>Target Community Name</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="Cedar Ridge, TX"></td></tr>
+        <tr><td>Population</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="85,000"></td></tr>
+        <tr><td>Labor Force Size</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="38,500"></td></tr>
+        <tr><td>Unemployment Rate</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="3.8%"></td></tr>
+        <tr><td>Property Tax — City (per $100)</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="$0.4875"></td></tr>
+        <tr><td>Property Tax — County (per $100)</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="$0.3950"></td></tr>
+        <tr><td>Property Tax — School ISD M&amp;O (per $100)</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="$0.8967"></td></tr>
+        <tr><td>Property Tax — School ISD I&amp;S (per $100)</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="$0.2850"></td></tr>
+        <tr><td>Property Tax — Special Districts (per $100)</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="$0.1340 (MUD $0.0840 + Hospital $0.0500)"></td></tr>
+        <tr><td>Local Sales Tax Rate</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="2.00% (City 1.5% + Type A 0.5%)"></td></tr>
+        <tr><td>Employment Multiplier</td><td><span class="badge badge-optional">Optional</span></td><td><input type="text" class="di" data-demo="2.35"></td></tr>
+
+        <!-- Incentives -->
+        <tr class="group-row"><td colspan="3">INCENTIVE TERMS (Steps 3–4)</td></tr>
+        <tr><td>Ch. 312 Abatement % &amp; Term</td><td><span class="badge badge-optional">Optional</span></td><td><input type="text" class="di" data-demo="75% for 10 years (real property improvements only)"></td></tr>
+        <tr><td>Ch. 380/381 Agreement Terms</td><td><span class="badge badge-optional">Optional</span></td><td><input type="text" class="di" data-demo="N/A"></td></tr>
+        <tr><td>Type A/B EDC Grant Amount</td><td><span class="badge badge-optional">Optional</span></td><td><input type="text" class="di" data-demo="$2,500,000"></td></tr>
+        <tr><td>Workforce Training Commitment</td><td><span class="badge badge-optional">Optional</span></td><td><input type="text" class="di" data-demo="$850,000 reimbursement"></td></tr>
+        <tr><td>Infrastructure Commitments (Itemized)</td><td><span class="badge badge-required">Required</span></td><td><textarea class="di" data-demo="Road improvements: $4,800,000&#10;Water main: $1,200,000&#10;Sewer line: $900,000&#10;Electrical substation: $1,500,000&#10;Total: $8,400,000"></textarea></td></tr>
+        <tr><td>Clawback Terms</td><td><span class="badge badge-required">Required</span></td><td><textarea class="di" data-demo="Employment < 80% for 2 consecutive years: pro-rata EDC grant repayment&#10;Closure within 7 years: full abatement recapture"></textarea></td></tr>
+
+        <!-- Presentation Context -->
+        <tr class="group-row"><td colspan="3">PRESENTATION CONTEXT (Step 5)</td></tr>
+        <tr><td>Approving Body / Audience</td><td><span class="badge badge-required">Required</span></td><td><input type="text" class="di" data-demo="Cedar Ridge EDC Board (7), City Council (5), County Commissioners (5)"></td></tr>
+        <tr><td>Board Composition Notes</td><td><span class="badge badge-optional">Optional</span></td><td><textarea class="di" data-demo="2 bankers, 1 real estate developer, 1 retired school superintendent, 1 small business owner, 1 hospital admin, 1 rancher"></textarea></td></tr>
+        <tr><td>Known Community Concerns</td><td><span class="badge badge-optional">Optional</span></td><td><textarea class="di" data-demo="School district tax impact, water availability during drought, traffic on FM 2410, local hiring vs. relocating workers"></textarea></td></tr>
+        <tr><td>Comparable Past Projects</td><td><span class="badge badge-optional">Optional</span></td><td><textarea class="di" data-demo="Project Bluebonnet (2023): Food processing, 200 jobs, $95M, 70% abatement 8yr&#10;Project Mustang (2024): Distribution, 450 jobs, $62M, 50% abatement 7yr"></textarea></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="btn-group" style="margin-top:1.5rem;">
+      <button class="btn btn-accent" onclick="loadDemoInputs()">Load Demo Data</button>
+      <button class="btn btn-outline" onclick="clearInputs()">Clear All</button>
+      <button class="btn btn-primary" onclick="window.print()">Print Checklist</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /.main -->
+
+<!-- ========== FOOTER ========== -->
+<div class="footer">
+  AI-Powered Cost-Benefit Analysis Toolkit &bull; CTED Advanced ED Finance<br>
+  Self-contained deliverables hub &mdash; no subscriptions, no logins, works offline<br>
+  <span style="color:var(--accent);">&#9733;</span> Built for economic developers, by economic developers
+</div>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+// Tab Navigation
+function showSection(id) {
+  document.querySelectorAll('.section-panel').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('nav button').forEach(function(el) { el.classList.remove('active'); });
+  var panel = document.getElementById(id);
+  if (panel) panel.classList.add('active');
+  var btn = document.querySelector('nav button[data-section="' + id + '"]');
+  if (btn) btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+document.getElementById('mainNav').addEventListener('click', function(e) {
+  if (e.target.tagName === 'BUTTON' && e.target.dataset.section) {
+    showSection(e.target.dataset.section);
+  }
+});
+
+// Clipboard Copy
+function copyBlock(elementId) {
+  var el = document.getElementById(elementId);
+  if (!el) return;
+  var text = el.textContent.replace(/Copy|Copied!/, '').trim();
+  var btn = el.querySelector('.copy-btn');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      showCopied(btn);
+    }).catch(function() {
+      fallbackCopy(el, btn);
+    });
+  } else {
+    fallbackCopy(el, btn);
+  }
+}
+
+function fallbackCopy(el, btn) {
+  var range = document.createRange();
+  range.selectNodeContents(el);
+  var sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  try {
+    document.execCommand('copy');
+    showCopied(btn);
+  } catch(e) {
+    if (btn) btn.textContent = 'Select & Ctrl+C';
+  }
+  sel.removeAllRanges();
+}
+
+function showCopied(btn) {
+  if (!btn) return;
+  btn.textContent = 'Copied!';
+  btn.classList.add('copied');
+  setTimeout(function() {
+    btn.textContent = 'Copy';
+    btn.classList.remove('copied');
+  }, 2000);
+}
+
+// QC Scoring
+var qcConfig = {
+  specificity: { ids: [1,2,3,4,5,6,7,8,9,10,11], weight: 0.40 },
+  completeness: { ids: [12,13,14,15,16,17,18], weight: 0.25 },
+  math: { ids: [19,20,21,22,23], weight: 0.20 },
+  presentation: { ids: [24,25,26,27,28], weight: 0.15 }
+};
+
+function calcQC() {
+  var overall = 0;
+  var allAbove70 = true;
+  for (var cat in qcConfig) {
+    var cfg = qcConfig[cat];
+    var passed = 0;
+    for (var i = 0; i < cfg.ids.length; i++) {
+      if (document.getElementById('qc' + cfg.ids[i]).checked) passed++;
+    }
+    var pct = Math.round((passed / cfg.ids.length) * 100);
+    overall += pct * cfg.weight;
+    if (pct < 70) allAbove70 = false;
+    document.getElementById('score-' + cat).textContent = passed + ' / ' + cfg.ids.length;
+    document.getElementById('pct-' + cat).textContent = pct + '%';
+    var bar = document.getElementById('bar-' + cat);
+    bar.style.width = pct + '%';
+    bar.style.background = pct >= 90 ? 'var(--success)' : pct >= 70 ? 'var(--warning)' : 'var(--danger)';
+  }
+  overall = Math.round(overall);
+  var scoreEl = document.getElementById('overallScore');
+  scoreEl.textContent = overall + '%';
+  scoreEl.className = 'score-number ' + (overall >= 90 ? 'pass' : overall >= 70 ? 'warn' : 'fail');
+  var pfEl = document.getElementById('passFail');
+  if (overall >= 90 && allAbove70) {
+    pfEl.textContent = 'PASS';
+    pfEl.className = 'pass-fail-badge pass';
+  } else {
+    pfEl.textContent = overall === 0 ? 'NOT YET SCORED' : 'NEEDS REVISION';
+    pfEl.className = 'pass-fail-badge fail';
+  }
+}
+
+function resetQC() {
+  for (var i = 1; i <= 28; i++) {
+    document.getElementById('qc' + i).checked = false;
+  }
+  calcQC();
+}
+
+// Data Input Checklist
+function loadDemoInputs() {
+  document.querySelectorAll('.di').forEach(function(el) {
+    if (el.dataset.demo) el.value = el.dataset.demo;
+  });
+}
+
+function clearInputs() {
+  document.querySelectorAll('.di').forEach(function(el) { el.value = ''; });
+}
+</script>
+</body>
+</html>
